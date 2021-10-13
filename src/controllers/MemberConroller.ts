@@ -1,6 +1,6 @@
 import { encryptPassword, codeResponse } from './../utils/functions';
 // import { memberObject } from './../utils/type';
-import { selectAll, selectById, insert,selectByPhone,deleteById } from './../repositories/MemberRepository';
+import { selectAll, selectById, insert, selectByPhone, deleteById, update } from './../repositories/MemberRepository';
 
 const {v4 : uuidv4} = require('uuid')
 
@@ -60,16 +60,43 @@ class MemberController {
     //delete member 
     deleteById = async(req,res)=>{
         const member_id = req.params.memberId;
-        const result = await deleteById(member_id);
-
         // display user 
-        // const memberData = await selectById(member_id)
-       
-        const success = {status : 201, message: `successfully deleted member with id`}
-        codeResponse( res,success);       
-        
+        const memberData = await selectById(member_id)
+
+        if(memberData != null){
+            const result = await deleteById(member_id);
+            const success = {status : 201, message: `successfully deleted member with id`}
+            codeResponse( res,success);  
+        }
+
+        const failure = {status : 404, message: `user with id ${member_id} not found `}
+        codeResponse( res,failure);         
     }
 
+    // update member information
+
+    updateMemberInfo = async(req,res) =>{
+        const member_id = req.params.memberId;
+        // display user 
+        const memberData = await selectById(member_id)
+        const data = req.body;
+
+        // adding member id from parameter to the object to be passed to the update funftion from repository
+        const memberUpdatedInfo = Object.assign(data, data.member_id = member_id)
+        console.log(memberUpdatedInfo);       
+        
+
+        if(memberData != null){
+
+            const result = await update(memberUpdatedInfo);
+            const success = {status : 200, message: `successfully updated  ${memberData.firstName} telephone  number`}
+            codeResponse( res,success); 
+        }
+
+        const failure = {status : 404, message: `user with id ${member_id} not found in system`}
+        codeResponse( res,failure); 
+
+    }
 
 }
 

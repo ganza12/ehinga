@@ -34,6 +34,24 @@ export const insert = async(data) =>{
     }    
 }
 
+
+export const update = async(data) =>{
+    const result = 
+        await getConnection()
+            .createQueryBuilder()
+            .update(Member)
+            .set({ telephone: data.telephone})
+            .where("member_id = :member_id", { member_id: data.member_id})
+            .execute();
+
+    if(!result){
+        return false
+    }else{
+        return true
+    }           
+
+}
+
 export const deleteById =async (member_id) =>{
     const result = await getConnection()
     .createQueryBuilder()

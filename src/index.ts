@@ -57,7 +57,10 @@ createConnection(dbConnection).then(async connection => {
         app.listen(PORT,()=>{
             console.log(successConsole())
     })
-}).catch((error) => console.log(error));
+}).catch((error) => 
+console.log(`failde to connect to database  status code : ${error.errno} and msg: ${error.code} `)
+
+);
 
 
 

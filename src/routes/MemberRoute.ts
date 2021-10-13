@@ -17,6 +17,9 @@ router.post('/', member.create)
 // deleteby id
 router.delete('/delete_member/:memberId',member.deleteById)
 
+// update  telephone
+router.patch('/update_member/:memberId', member.updateMemberInfo)
+
 module.exports = router;
 
 
