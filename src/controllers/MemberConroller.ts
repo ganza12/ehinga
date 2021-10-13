@@ -1,6 +1,6 @@
 import { encryptPassword, codeResponse } from './../utils/functions';
 // import { memberObject } from './../utils/type';
-import { selectAll, selectById, insert,selectByPhone } from './../repositories/MemberRepository';
+import { selectAll, selectById, insert,selectByPhone,deleteById } from './../repositories/MemberRepository';
 
 const {v4 : uuidv4} = require('uuid')
 
@@ -56,6 +56,21 @@ class MemberController {
         const error = {status : 409, message: 'user already exists'}
         codeResponse( res,error);               
     }
+    
+    //delete member 
+    deleteById = async(req,res)=>{
+        const member_id = req.params.memberId;
+        const result = await deleteById(member_id);
+
+        // display user 
+        // const memberData = await selectById(member_id)
+       
+        const success = {status : 201, message: `successfully deleted member with id`}
+        codeResponse( res,success);       
+        
+    }
+
+
 }
 
 export default MemberController;

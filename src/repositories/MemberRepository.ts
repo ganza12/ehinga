@@ -1,6 +1,6 @@
 import { Farmer } from './../entity/Farmer';
 import { Member } from './../entity/Member';
-import {getManager, getRepository} from "typeorm";
+import {getManager, getRepository,getConnection} from "typeorm";
  
 
 export const selectAll = async () =>{
@@ -32,5 +32,19 @@ export const insert = async(data) =>{
     }else{
         return true
     }    
+}
+
+export const deleteById =async (member_id) =>{
+    const result = await getConnection()
+    .createQueryBuilder()
+    .delete()
+    .from(Member)
+    .where("member_id = :member_id", { member_id: member_id})
+    .execute();
+    if(!result){
+        return false
+    }else{
+        return true
+    }
 }
 
