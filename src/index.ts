@@ -31,6 +31,8 @@ app.use((req:any, res:any,next:any) => {
 
 
 app.use('/api/members',require('./routes/MemberRoute'))
+app.use('/api/member_type',require('./routes/MemberTypeRoute'))
+// app.use('/api/member_function',require('./routes/MemberFunctionRoute'))
 
 
 app.get('/api/', (req, res) => res.send({
@@ -58,9 +60,10 @@ createConnection(dbConnection).then(async connection => {
             console.log(successConsole())
     })
 }).catch((error) => 
-console.log(`failde to connect to database  status code : ${error.errno} and msg: ${error.code} `)
+console.log(error)
 
 );
+
 
 
 

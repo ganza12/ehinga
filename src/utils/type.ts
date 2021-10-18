@@ -1,3 +1,4 @@
+
 export interface responseObject{
     status : number,
     message : memberObject[] |string
@@ -10,4 +11,9 @@ export interface memberObject{
     telephone : string,
     password : string,
     isActive : string
+}
+
+export interface MemberTypesObject{
+    member_type : string,
+    isActive : boolean
 }

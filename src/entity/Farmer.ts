@@ -4,23 +4,21 @@ import { Entity,PrimaryColumn, Column, OneToOne, JoinColumn } from 'typeorm';
 @Entity('farmer')
 export class Farmer{
 
-    @PrimaryColumn({type:'uuid'})
+    @PrimaryColumn({type:'uuid',nullable: false})
     farmer_id : string;
 
     @Column()
     isTrained : boolean;
    
-    @Column()
-    is : boolean;
-
-   @OneToOne(
-       ()=>Member,
-       (member) => member.member,
-       {
-        onDelete: 'CASCADE',
-        onUpdate: "CASCADE"
-       })
-   @JoinColumn({name : "member_id"})
-   member : Member
+    @OneToOne(
+    ()=>Member,
+    (member) => member.member_id,
+    {
+    onDelete: 'RESTRICT',
+    onUpdate: "RESTRICT"
+    })
+    
+   @JoinColumn({name:"member_id"})
+   member_id : Member
 
 }

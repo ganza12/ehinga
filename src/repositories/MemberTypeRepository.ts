@@ -1,32 +1,33 @@
-import { Farmer } from './../entity/Farmer';
-import { Member } from './../entity/Member';
+import { MemberType } from '../entity/MemberType';
 import {getManager, getRepository,getConnection} from "typeorm";
  
 
 export const selectAll = async () =>{
     const entityManager = getManager();
-    const result= await entityManager.find(Member);    
+    const result= await entityManager.find(MemberType);    
     return result;
 }
 
-export const selectById = async(memberId) =>{
+export const selectById = async(memberTypeId) =>{
     const entityManager = getManager();
-    const result  = await entityManager.findOne(Member,memberId)    
+    const result  = await entityManager.findOne(MemberType,memberTypeId)    
     return result;
 }
 
 
-export const selectByPhone = async(telephone) =>{
-    const member= getRepository(Member)
-    .createQueryBuilder('member')
-    .where('member.telephone = :telephone',{telephone:telephone})
-    .getOne()    
-    return member;
+export const selectMemberType = async(member_type) =>{
+    const entityManager = getManager();
+    const result  = await entityManager.findOne(MemberType,member_type)    
+    return result;
 }
+
+
+
+
 
 export const insert = async(data) =>{
     const entityManager = getManager();
-    const result = entityManager.save(Member, data)
+    const result = entityManager.save(MemberType, data)
     if(!result){
         return false
     }else{
@@ -39,9 +40,9 @@ export const update = async(data) =>{
     const result = 
         await getConnection()
             .createQueryBuilder()
-            .update(Member)
-            .set({ telephone: data.telephone})
-            .where("member_id = :member_id", { member_id: data.member_id})
+            .update(MemberType)
+            .set({ member_type: data.member_type})
+            .where("member_type_id = :member_type_id", { member_type_id: data.member_type_id})
             .execute();
 
     if(!result){
@@ -56,8 +57,8 @@ export const deleteById =async (member_id) =>{
     const result = await getConnection()
     .createQueryBuilder()
     .delete()
-    .from(Member)
-    .where("member_id = :member_id", { member_id: member_id})
+    .from(MemberType)
+    .where("member_type_id = :member_type_id", { member_type_id: member_id})
     .execute();
     if(!result){
         return false
@@ -72,9 +73,9 @@ export const setStatus = async(data)=>{
     const result = 
     await getConnection()
         .createQueryBuilder()
-        .update(Member)
+        .update(MemberType)
         .set({ isActive: data.isActive})
-        .where("member_id = :member_id", { member_id: data.member_id})
+        .where("member_type_id = :member_type_id", { member_type_id: data.member_type_id})
         .execute();
 
     if(!result){

@@ -1,11 +1,15 @@
+import { Agronome } from './Agronome';
+import { Client } from './Client';
 import { Farmer } from './Farmer';
-import {  OneToOne,BaseEntity, Entity,PrimaryColumn, Column  } from "typeorm";
+import {MemberType} from'./MemberType';
+import {  OneToOne,BaseEntity, Entity,PrimaryColumn, Column,ManyToMany,JoinTable, } from "typeorm";
 
 @Entity('member')
 export class Member extends BaseEntity {
 
-    @PrimaryColumn({type: 'uuid'})
-    member_id : string;
+    @PrimaryColumn({type: 'uuid',nullable:false})
+    // @PrimaryGeneratedColumn()
+    member_id : number;
 
     @Column()
     firstName: string;
@@ -19,16 +23,37 @@ export class Member extends BaseEntity {
     @Column({nullable :false})
     password : string;
 
-    @Column({nullable:false})
+    @Column({nullable:false, default :true})
     isActive : boolean;
 
     @OneToOne(
         ()=>Farmer,
-        (farmer) => farmer.member,{
+        (farmer) => farmer.farmer_id,{
+            onDelete: 'CASCADE',
+            onUpdate: "CASCADE",
+           
+        })    
+        farmer_id : Member
+
+    @OneToOne(
+        ()=>Client,
+        (client) => client.client_id,{
             onDelete: 'CASCADE',
             onUpdate: "CASCADE"
-        })
+        })    
+        client_id : Member
+
+
+    @OneToOne(
+        ()=>Agronome,
+        (agronome) => agronome.agronome_id,{
+            onDelete: 'CASCADE',
+            onUpdate: "CASCADE"
+        })    
+        agronome_id : Member
     
-    member : Member
+    @ManyToMany(() => MemberType)
+    @JoinTable()
+    memnber_type: MemberType[];
         
 }
